@@ -1,0 +1,59 @@
+{% extends 'games_crud/base.html' %}
+
+
+{% block content %}
+
+    <div class="container mt-4 mb-5">
+        <h2 class="mb-3">Our products</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Publisher</th>
+                    <th>Posted On</th>
+                    <th>Manage</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for game in games %}
+                <tr>
+                    <td>{{ game.title }}</td>
+                    <td> {{ game.description }} </td>
+                    {% if game.publisher != null %}
+                        <td> {{ game.publisher }} </td>
+                    {% else %}
+                        <td>Not registered</td>
+                    {% endif %}
+                    <td>{{ game.listing_posted }}</td>
+                    <td>
+                        <div class="my-3">
+                            <a href="{% url 'edit_form_view' game.pk %}" class="btn btn-primary">Edit</a>
+                        </div>
+                        <div class="my-3">
+                            <form method="post" action="{% url 'delete_game_view' game.pk %}">
+                                {% csrf_token %}
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    
+    <div class="container mt-4 mb-5">
+        <h2 class="mb-3">Add product</h2>
+        <form action="{% url 'create_game_view' %}" method="POST" class="p-4 border rounded shadow-sm bg-light">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+            
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+{% endblock %}
