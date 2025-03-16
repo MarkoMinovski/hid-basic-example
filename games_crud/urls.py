@@ -12,4 +12,5 @@ urlpatterns = [
     path('delete_game/<game_id>', games_crud.views.delete_game, name='delete_game_view'),
     path('edit_form/<game_id>', games_crud.views.get_update_form, name='edit_form_view'),
     path('update_game/<game_id>', games_crud.views.update, name='update_game_view'),
+    path('create_publisher', games_crud.views.add_publisher, name='create_publisher_view')
 ]

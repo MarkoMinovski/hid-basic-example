@@ -49,7 +49,19 @@
         <form action="{% url 'create_game_view' %}" method="POST" class="p-4 border rounded shadow-sm bg-light">
             {% csrf_token %}
             <div class="mb-3">
-                {{ form.as_p }}
+                {{ game_form.as_p }}
+            </div>
+            
+            <button type="submit">Add</button>
+        </form>
+    
+    <hr/>
+    
+    <h2 class="mb-3">Add publisher</h2>
+    <form action="{% url 'create_publisher_view' %}" method="POST" class="p-4 border rounded shadow-sm bg-light">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ publisher_form.as_p }}
             </div>
             
             <button type="submit">Add</button>

@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:17
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: dockercompose_exampledb
+      POSTGRES_USER: dc_user
+      POSTGRES_PASSWORD: dc_password
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "db_prod" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    ports:
+    - "5432:5432"
+    volumes:
+    - "D:/postgres_data:/var/lib/postgresql/data"
+
+  web:
+    build: .
+    container_name: django_app
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_NAME: dockercompose_exampledb
+      DATABASE_USER: dc_user
+      DATABASE_PASSWORD: dc_password
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432

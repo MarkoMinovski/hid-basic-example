@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render, loader, HttpResponse, get_object_or_404
 from .models import VideoGame
-from .forms import VideoGameForm
+from .forms import VideoGameForm, PublisherForm
+
 
 # Create your views here.
 
@@ -18,7 +19,8 @@ def all_games(request):
 
     context = {
         'games': VideoGame.objects.all().order_by('-listing_posted'),
-        'form': VideoGameForm()
+        'game_form': VideoGameForm(),
+        'publisher_form': PublisherForm()
     }
 
     return HttpResponse(template.render(context, request))
@@ -57,3 +59,12 @@ def update(request, game_id):
             form.save()
 
     return redirect('all_games_view')
+
+
+def add_publisher(request):
+    if request.method == 'POST':
+        form = PublisherForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+        return redirect('all_games_view')
